@@ -1,39 +1,88 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useReducer, useCallback, useRef } from 'react';
+import React from 'react';
 import axios from 'axios';
-//import data from '../data';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Product from '../Components/Product';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_REQUEST":
+      return { ...state, loading: true };
+    case "FETCH_SUCCESS":
+      return { ...state, products: action.payload, loading: false };
+    case "FETCH_FAIL":
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const logger = (reducer) => {
+  return (prevState, action) => {
+    const nextState = reducer(prevState, action);
+    console.group(action.type);
+    console.log("Previous state:", prevState);
+    console.log("Action:", action);
+    console.log("Next state:", nextState);
+    console.groupEnd();
+    return nextState;
+  };
+};
+
+const initialState = {
+  products: [],
+  loading: true,
+  error: '',
+};
 
 function Home() {
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
+  const [{ loading, error, products }, dispatch] = useReducer(
+    logger(reducer), // wrap reducer with logger
+    initialState
+  );
+
+  const fetchData = useCallback(async () => {
+    dispatch({ type: "FETCH_REQUEST" });
+    try {
       const result = await axios.get('/api/products');
-      setProducts(result.data);
-    };
-    fetchData();
-  }, []);
+      dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+    } catch (err) {
+      dispatch({ type: "FETCH_FAIL", payload: err.message });
+    }
+  }, [dispatch]);
+
+  const hasFetched = useRef(false);
+
+  useEffect(() => {
+    if (!hasFetched.current) {
+      fetchData();
+      hasFetched.current = true;
+    }
+  }, [fetchData]);
+
   return (
     <div>
-      <h1>Featured Products</h1>
+      <h2>Featured Products</h2>
       <div className="products">
-        {products.map((product) => (
-          <div className="product" key={product.slug}>
-            <Link to={`/product/${product.slug}`}>
-              <img src={product.image} alt={product.name} />
-            </Link>
-            <div className="product-info">
-              <Link to={`/product/${product.slug}`}>
-                <p>{product.name}</p>
-              </Link>
-              <p>
-                <strong>INR {product.price}</strong>
-              </p>
-              <button>Add to cart</button>
-            </div>
-          </div>
+        {
+          loading? (<div>Loading...</div>)
+          :
+          error? (<div>{error}</div>)
+          :
+        (
+          <Row>
+          {products.map((product) => (
+            <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+              <Product product = {product}></Product>
+          </Col>
         ))}
+        </Row>
+        )
+      }
       </div>
     </div>
   );
 }
+
 export default Home;
