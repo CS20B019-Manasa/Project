@@ -4,6 +4,9 @@ import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Product from '../Components/Product';
+import Loading from '../Components/Loading';
+import Message from '../Components/Message';
+
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -66,9 +69,9 @@ function Home() {
       <h2>Featured Products</h2>
       <div className="products">
         {
-          loading? (<div>Loading...</div>)
+          loading? (<Loading/>)
           :
-          error? (<div>{error}</div>)
+          error? (<Message variant="danger">{error}</Message>)
           :
         (
           <Row>

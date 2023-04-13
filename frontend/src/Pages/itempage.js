@@ -8,6 +8,9 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Rating from '../Components/Rating';
 import './itempage.css';
+import Loading from '../Components/Loading';
+import Message from '../Components/Message';
+import { getError } from '../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -40,7 +43,7 @@ function Itempage() {
       const result = await axios.get(`/api/products/slug/${slug}`);
       dispatch({ type: "FETCH_SUCCESS", payload: result.data });
     } catch (err) {
-      dispatch({ type: "FETCH_FAIL", payload: err.message });
+      dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
     }
   }, [slug]);
 
@@ -53,8 +56,8 @@ function Itempage() {
     }
   }, [fetchData], [slug]);
   return (
-    loading? (<div>Loading...</div>):
-    error? (<div>{error}</div>):
+    loading? (<Loading/>):
+    error? (<Message variant="danger">{error}</Message>):
     (<div>
       <Row>
         <Col md={6}>
