@@ -10,6 +10,7 @@ import { Store } from './Store';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import {LinkContainer} from 'react-router-bootstrap';
+import Cartpage from './Pages/Cartpage.js';
 function App() {
   const { state } = useContext(Store);
   const { cart } = state;
@@ -38,6 +39,7 @@ function App() {
         <main>
           <Container>
             <Routes>
+              <Route path="/cart" element={<Cartpage />} />
               <Route path="/product/:slug" element={<Itempage />} />
               <Route path="/" element={<Home />} />
             </Routes>

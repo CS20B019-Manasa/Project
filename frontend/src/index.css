@@ -47,6 +47,6 @@ li {
   font-size: 25px;
 }
 
-
-
-
+.img-thumbnail {
+  height: 80px;
+}

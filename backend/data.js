@@ -1,6 +1,7 @@
 const data = {
     products: [
         {
+            _id:'1',
             name: 'Roukma Shirt',
             slug: 'roukma-shirt',
             category: 'Shirts',
@@ -13,6 +14,7 @@ const data = {
             description: 'Quality is good',
         },
         {
+            _id:'2',
             name: 'Biba Palazoo pant',
             slug: 'biba-palazoo-pant',
             category: 'Pants',
@@ -25,6 +27,7 @@ const data = {
             description: 'Quality is good and very comfort',
         },
         {
+            _id:'3',
             name: 'Nike Tshirt',
             slug: 'nike-tshirt',
             category: 'TShirts',
@@ -37,6 +40,7 @@ const data = {
             description: 'Cloth is so smooth',
         },
         {
+            _id:'4',
             name: 'Nike Hoodie',
             slug: 'nike-hoodie',
             category: 'Hoodies',

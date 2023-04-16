@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
@@ -13,6 +13,7 @@ import { getError } from '../utils';
 import { Store } from '../Store';
 
 function Itempage() {
+  const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ function Itempage() {
 
   const addToCartHandler = () => {
     addToCart({ ...product, quantity: 1 });
+    navigate('/cart');
   };
 
   return (
