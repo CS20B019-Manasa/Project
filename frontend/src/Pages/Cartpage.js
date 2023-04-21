@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { Store } from '../Store';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -6,37 +6,30 @@ import Message from '../Components/Message';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { Link, useNavigate} from 'react-router-dom';
+import '../index.css';
 
-export default function Cartpage() {
+function CartPage() {
   const navigate = useNavigate();
-  const { state,incrementCartItem, removeFromCart} = useContext(Store);
-  const {
-    cart: { cartItems },
-  } = state;
+  const { state, removeFromCart, incrementCartItem, decrementCartItem, clearCart } = useContext(Store);
 
-  const addCartHandler = async (item, quantity) => {
-    const { data } = await axios.get(`/api/products/${item._id}`);
-    if (data.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock');
-      return;
-    }
-    incrementCartItem(item);
-  };
-  const subCartHandler = async (item, quantity) => {
-    if (quantity === 1) {
-      return;
-    }
-  };
-  const removeItemHandler = (item) => {
+  const handleRemoveItem = (item) => {
     removeFromCart(item);
   };
-  
+
+  const handleIncrementItem = (item) => {
+    incrementCartItem(item);
+  };
+
+  const handleDecrementItem = (item) => {
+    decrementCartItem(item);
+  };
+
   const checkoutHandler = () => {
     navigate('/signin?redirect=/shipping');
   };
 
+  const { cartItems } = state.cart;
 
   return (
     <div>
@@ -63,9 +56,7 @@ export default function Cartpage() {
                     </Col>
                     <Col md={3}>
                       <Button
-                        onClick={() =>
-                          subCartHandler(item, item.quantity - 1)
-                        }
+                        onClick={() => handleDecrementItem(item)}
                         variant="light"
                         disabled={item.quantity === 1}
                       >
@@ -74,9 +65,7 @@ export default function Cartpage() {
                       <span>{item.quantity}</span>{' '}
                       <Button
                         variant="light"
-                        onClick={() =>
-                          addCartHandler(item, item.quantity + 1)
-                        }
+                        onClick={() => handleIncrementItem(item)}
                         disabled={item.quantity === item.countInStock}
                       >
                         <i className="fas fa-plus-circle"></i>
@@ -85,7 +74,7 @@ export default function Cartpage() {
                     <Col md={3}>Rs. {item.price}</Col>
                     <Col md={2}>
                       <Button
-                            onClick={() => removeItemHandler(item)}
+                            onClick={() => handleRemoveItem(item)}
                             variant="light"
                         >
                         <i className="fas fa-trash"></i>
@@ -116,7 +105,19 @@ export default function Cartpage() {
                       onClick={checkoutHandler}
                       disabled={cartItems.length === 0}
                     >
-                      Proceed to Checkout
+                      Proceed
+                    </Button>
+                  </div>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <div className= "d-grid">
+                    <Button
+                      type="button"
+                      variant="danger"
+                      disabled={cartItems.length === 0}
+                      onClick={() => clearCart()}
+                    >
+                      Clear Cart
                     </Button>
                   </div>
                 </ListGroup.Item>
@@ -128,3 +129,5 @@ export default function Cartpage() {
     </div>
   );
 }
+
+export default CartPage;

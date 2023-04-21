@@ -51,13 +51,18 @@ export function StoreProvider(props) {
     setCartItems(cartItems);
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   const value = {
     state,
     setCartItems,
     addToCart,
     removeFromCart,
     incrementCartItem,
-    decrementCartItem
+    decrementCartItem,
+    clearCart
   };
 
   return <Store.Provider value={value}>{props.children}</Store.Provider>;
