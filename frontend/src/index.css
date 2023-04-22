@@ -50,3 +50,14 @@ li {
 .img-thumbnail {
   height: 80px;
 }
+
+.small-container {
+  max-width: 600px;
+}
+
+.signin-card {
+  justify-content: center;
+  width : 60%;
+  padding: 8%;
+  margin-left: 18%;
+}

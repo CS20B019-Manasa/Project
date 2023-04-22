@@ -11,6 +11,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import {LinkContainer} from 'react-router-bootstrap';
 import Cartpage from './Pages/Cartpage.js';
+import Signinpage from './Pages/Signinpage.js'
 function App() {
   const { state } = useContext(Store);
   const { cart } = state;
@@ -42,6 +43,7 @@ function App() {
               <Route path="/cart" element={<Cartpage />} />
               <Route path="/product/:slug" element={<Itempage />} />
               <Route path="/" element={<Home />} />
+              <Route path="/signin" element={<Signinpage />} />
             </Routes>
           </Container>
         </main>
