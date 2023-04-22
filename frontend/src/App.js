@@ -22,7 +22,7 @@ function App() {
           <Navbar variant="dark" style={{ backgroundColor: "#1a687e" }}>
             <Container>
               <LinkContainer to = "/">
-                <Navbar.Brand>VMart</Navbar.Brand>
+                <Navbar.Brand>SuperMart</Navbar.Brand>
               </LinkContainer>
               <Nav className="me-auto">
                 <Link to="/cart" className="nav-link">
