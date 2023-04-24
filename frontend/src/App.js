@@ -15,6 +15,7 @@ import Signinpage from './Pages/Signinpage.js'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Addresspage from './Pages/Addresspage';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -23,6 +24,7 @@ function App() {
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('shippingAddress');
   };
   return (
     <BrowserRouter>
@@ -75,6 +77,7 @@ function App() {
               <Route path="/cart" element={<Cartpage />} />
               <Route path="/product/:slug" element={<Itempage />} />
               <Route path="/" element={<Home />} />
+              <Route path="/shipping" element={<Addresspage />} />
               <Route path="/signin" element={<Signinpage />} />
             </Routes>
           </Container>
