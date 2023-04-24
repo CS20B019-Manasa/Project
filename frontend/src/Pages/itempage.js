@@ -1,57 +1,75 @@
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Rating from '../Components/Rating';
-import './itempage.css';
-import Loading from '../Components/Loading';
-import Message from '../Components/Message';
-import { getError } from '../utils';
 import { Store } from '../Store';
+import './itempage.css';
 
-function Itempage() {
-  //const navigate = useNavigate();
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+    case 'FETCH_SUCCESS':
+      return { ...state, product: action.payload, loading: false };
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+function ProductScreen() {
   const params = useParams();
   const { slug } = params;
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [product, setProduct] = useState({});
-  const { addToCart } = useContext(Store);
 
+  const [{ loading, error, product }, dispatch] = useReducer(reducer, {
+    product: [],
+    loading: true,
+    error: '',
+  });
   useEffect(() => {
     const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
       try {
-        setLoading(true);
         const result = await axios.get(`/api/products/slug/${slug}`);
-        setProduct(result.data);
-        setLoading(false);
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
       } catch (err) {
-        setError(getError(err));
-        setLoading(false);
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
     };
     fetchData();
   }, [slug]);
 
-  const addToCartHandler = () => {
-    addToCart({ ...product, quantity: 1 });
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart } = state;
+  const addToCartHandler = async () => {
+    const existItem = cart.cartItems.find((x) => x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    if (data.countInStock < quantity) {
+      window.alert('Sorry. Product is out of stock');
+      return;
+    }
+    ctxDispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...product, quantity },
+    });
   };
 
-  return (
-    <>
-      {loading ? (
-        <Loading />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
-      ) : (
-        <div>
-          <Row>
-            <Col md={6}>
-              <img className="img-large" src={product.image} alt={product.name}></img>
-            </Col>
+  return loading ? (
+    <div>Loading...</div>
+  ) : error ? (
+    <div>{error}</div>
+  ) : (
+    <div>
+      <Row>
+        <Col md={6}>
+          <img className="img-large" src={product.image} alt={product.name}></img>
+          </Col>
             <Col md={3}>
               <ul>
                 <li>
@@ -103,10 +121,7 @@ function Itempage() {
               </Card>
             </Col>
           </Row>
-        </div>
-      )}
-    </>
+    </div>
   );
 }
-
-export default Itempage;
+export default ProductScreen;

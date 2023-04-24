@@ -1,5 +1,4 @@
-import { createContext, useState } from 'react';
-
+import { createContext, useReducer } from 'react';
 export const Store = createContext();
 
 const initialState = {
@@ -9,61 +8,35 @@ const initialState = {
       : [],
   },
 };
+function reducer(state, action) {
+  switch (action.type) {
+    case 'CART_ADD_ITEM':
+      // add to cart
+      const newItem = action.payload;
+      const existItem = state.cart.cartItems.find(
+        (item) => item._id === newItem._id
+      );
+      const cartItems = existItem
+        ? state.cart.cartItems.map((item) =>
+            item._id === existItem._id ? newItem : item
+          )
+        : [...state.cart.cartItems, newItem];
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      return { ...state, cart: { ...state.cart, cartItems } };
 
+    case 'CART_REMOVE_ITEM': {
+      const cartItems = state.cart.cartItems.filter(
+        (item) => item._id !== action.payload._id
+      );
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      return { ...state, cart: { ...state.cart, cartItems } };
+    }
+    default:
+      return state;
+  }
+}
 export function StoreProvider(props) {
-  const [state, setState] = useState(initialState);
-
-  const setCartItems = (cartItems) => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    setState((prevState) => ({ ...prevState, cart: { ...prevState.cart, cartItems } }));
-  };
-
-  const addToCart = (newItem) => {
-    const existItem = state.cart.cartItems.find(
-      (item) => item._id === newItem._id
-    );
-    const cartItems = existItem
-      ? state.cart.cartItems.map((item) =>
-          item._id === existItem._id ? newItem : item
-        )
-      : [...state.cart.cartItems, newItem];
-    setCartItems(cartItems);
-  };
-
-  const removeFromCart = (itemToRemove) => {
-    const cartItems = state.cart.cartItems.filter(
-      (item) => item._id !== itemToRemove._id
-    );
-    setCartItems(cartItems);
-  };
-
-  const incrementCartItem = (itemToIncrement) => {
-    const cartItems = state.cart.cartItems.map((item) =>
-      item._id === itemToIncrement._id ? { ...item, quantity: item.quantity + 1 } : item
-    );
-    setCartItems(cartItems);
-  };
-
-  const decrementCartItem = (itemToDecrement) => {
-    const cartItems = state.cart.cartItems.map((item) =>
-      item._id === itemToDecrement._id ? { ...item, quantity: item.quantity - 1 } : item
-    ).filter((item) => item.quantity > 0);
-    setCartItems(cartItems);
-  };
-
-  const clearCart = () => {
-    setCartItems([]);
-  };
-
-  const value = {
-    state,
-    setCartItems,
-    addToCart,
-    removeFromCart,
-    incrementCartItem,
-    decrementCartItem,
-    clearCart
-  };
-
-  return <Store.Provider value={value}>{props.children}</Store.Provider>;
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const value = { state, dispatch };
+  return <Store.Provider value={value}>{props.children} </Store.Provider>;
 }

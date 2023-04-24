@@ -1,35 +1,40 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Store } from '../Store';
+//import { Helmet } from 'react-helmet-async';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Message from '../Components/Message';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Link, useNavigate} from 'react-router-dom';
-import '../index.css';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-function CartPage() {
+export default function Cartpage() {
   const navigate = useNavigate();
-  const { state, removeFromCart, incrementCartItem, decrementCartItem, clearCart } = useContext(Store);
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const {
+    cart: { cartItems },
+  } = state;
 
-  const handleRemoveItem = (item) => {
-    removeFromCart(item);
+  const updateCartHandler = async (item, quantity) => {
+    const { data } = await axios.get(`/api/products/${item._id}`);
+    if (data.countInStock < quantity) {
+      window.alert('Sorry. Product is out of stock');
+      return;
+    }
+    ctxDispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...item, quantity },
+    });
   };
-
-  const handleIncrementItem = (item) => {
-    incrementCartItem(item);
-  };
-
-  const handleDecrementItem = (item) => {
-    decrementCartItem(item);
+  const removeItemHandler = (item) => {
+    ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
 
   const checkoutHandler = () => {
     navigate('/signin?redirect=/shipping');
   };
-
-  const { cartItems } = state.cart;
 
   return (
     <div>
@@ -56,7 +61,9 @@ function CartPage() {
                     </Col>
                     <Col md={3}>
                       <Button
-                        onClick={() => handleDecrementItem(item)}
+                        onClick={() =>
+                          updateCartHandler(item, item.quantity - 1)
+                        }
                         variant="light"
                         disabled={item.quantity === 1}
                       >
@@ -65,18 +72,20 @@ function CartPage() {
                       <span>{item.quantity}</span>{' '}
                       <Button
                         variant="light"
-                        onClick={() => handleIncrementItem(item)}
+                        onClick={() =>
+                          updateCartHandler(item, item.quantity + 1)
+                        }
                         disabled={item.quantity === item.countInStock}
                       >
                         <i className="fas fa-plus-circle"></i>
                       </Button>
                     </Col>
-                    <Col md={3}>Rs. {item.price}</Col>
+                    <Col md={3}>${item.price}</Col>
                     <Col md={2}>
                       <Button
-                            onClick={() => handleRemoveItem(item)}
-                            variant="light"
-                        >
+                        onClick={() => removeItemHandler(item)}
+                        variant="light"
+                      >
                         <i className="fas fa-trash"></i>
                       </Button>
                     </Col>
@@ -93,7 +102,7 @@ function CartPage() {
                 <ListGroup.Item>
                   <h3>
                     Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    items) : Rs. 
+                    items) : $
                     {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
                   </h3>
                 </ListGroup.Item>
@@ -105,19 +114,7 @@ function CartPage() {
                       onClick={checkoutHandler}
                       disabled={cartItems.length === 0}
                     >
-                      Proceed
-                    </Button>
-                  </div>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <div className= "d-grid">
-                    <Button
-                      type="button"
-                      variant="danger"
-                      disabled={cartItems.length === 0}
-                      onClick={() => clearCart()}
-                    >
-                      Clear Cart
+                      Proceed to Checkout
                     </Button>
                   </div>
                 </ListGroup.Item>
@@ -129,5 +126,3 @@ function CartPage() {
     </div>
   );
 }
-
-export default CartPage;
