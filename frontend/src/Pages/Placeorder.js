@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { getError } from '../utils';
 import Loading from '../Components/Loading';
 
+//To summarize the order details
 const reducer = (state, action) => {
     switch (action.type) {
       case 'CREATE_REQUEST':

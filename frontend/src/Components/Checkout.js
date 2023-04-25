@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
+// To show the progress bar while buying the products
 export default function CheckoutSteps(props) {
   return (
     <Row className="checkout-steps">

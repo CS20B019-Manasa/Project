@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import Product from '../Components/Product';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 
+//To search the products and return the products that matches the search
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':

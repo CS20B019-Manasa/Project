@@ -3,6 +3,7 @@ import Product from '../models/productmodel.js';
 import data from '../data.js';
 import User from '../models/usermodel.js';
 
+// routes for the user schema
 const seedRouter = express.Router();
 
 seedRouter.get('/', async (req, res) => {

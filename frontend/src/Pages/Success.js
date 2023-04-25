@@ -1,6 +1,8 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
+
+//Success page if the order placed
 export default function Success() {
   return (
     <div>

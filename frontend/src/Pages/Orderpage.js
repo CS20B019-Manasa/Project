@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Store } from '../Store';
 
+//To select from the linked bank accounts
 export default function BankPage() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -26,6 +27,8 @@ export default function BankPage() {
     localStorage.setItem('Bank', BankName);
     navigate('/success');
   };
+
+  //return the options user bank accounts
   return (
     <div>
       <div className="container small-container">

@@ -9,6 +9,7 @@ import Rating from '../Components/Rating';
 import { Store } from '../Store';
 import './itempage.css';
 
+// To render the item page
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -59,7 +60,7 @@ function ProductScreen() {
       payload: { ...product, quantity },
     });
   };
-
+  // Return the details of that particular product
   return loading ? (
     <div>Loading...</div>
   ) : error ? (

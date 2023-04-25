@@ -1,5 +1,6 @@
 function Rating(props) {
     const { rating, no_of_reviews } = props;
+    //To show the reviews in the for of stars
     return (
       <div className="rating">
         <span>

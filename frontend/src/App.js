@@ -96,7 +96,7 @@ function App() {
               <Route path="/payment" element={<Paymentpage />} />
               <Route path="/placeorder" element={<Placeorder />} />
               <Route path="/success" element={<Success />} />
-              <Route path="/order/:id" element={<Orderpage />} />
+              <Route path="/order" element={<Orderpage />} />
             </Routes>
           </Container>
         </main>

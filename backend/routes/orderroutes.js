@@ -3,6 +3,7 @@ import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/ordermodel.js';
 import { isAuth } from '../utils.js';
 
+// To get the details of the order that is placed
 const orderRouter = express.Router();
 orderRouter.post(
   '/',

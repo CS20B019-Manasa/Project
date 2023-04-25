@@ -7,7 +7,7 @@ import Product from '../Components/Product';
 import Loading from '../Components/Loading';
 import Message from '../Components/Message';
 
-
+// Home page to display the products
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
@@ -44,7 +44,7 @@ function Home() {
     logger(reducer), // wrap reducer with logger
     initialState
   );
-
+  // fetch all the products that are present in the data
   const fetchData = useCallback(async () => {
     dispatch({ type: "FETCH_REQUEST" });
     try {
@@ -63,7 +63,7 @@ function Home() {
       hasFetched.current = true;
     }
   }, [fetchData]);
-
+  // Return the products to the screen with their details
   return (
     <div>
       <h2>Featured Products</h2>

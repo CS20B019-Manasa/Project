@@ -13,7 +13,7 @@ function Product(props) {
   const {
     cart: { cartItems },
   } = state;
-
+  //To add the items to Cart, if already existed then increase by 1 
   const addToCartHandler = async (item) => {
     const existItem = cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
@@ -27,7 +27,7 @@ function Product(props) {
       payload: { ...item, quantity },
     });
   };
-
+  //Return the product page with image,name and reviews
   return (
     <Card>
       <Link to={`/product/${product.slug}`}>

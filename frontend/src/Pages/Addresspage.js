@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import CheckoutSteps from '../Components/Checkout';
-
+// To save the shipping address of the user
 export default function Addresspage() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -17,6 +17,7 @@ export default function Addresspage() {
   const [address, setAddress] = useState(shippingAddress.address || '');
   const [city, setCity] = useState(shippingAddress.city || '');
   const [pinCode, setPinCode] = useState(shippingAddress.pinCode || '');
+  //If there is no user signed in then redirect to signin page
   useEffect(() => {
     if (!userInfo) {
       navigate('/signin?redirect=/shipping');
@@ -49,6 +50,7 @@ export default function Addresspage() {
     );
     navigate('/payment');
   };
+  // return the form to user to enter the details
   return (
     <div>
       <title>Shipping Address</title>

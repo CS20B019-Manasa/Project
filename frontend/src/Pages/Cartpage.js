@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { Store } from '../Store';
-//import { Helmet } from 'react-helmet-async';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Message from '../Components/Message';
@@ -10,13 +9,14 @@ import Card from 'react-bootstrap/Card';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+// To see the number of items present in the cart
 export default function Cartpage() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
     cart: { cartItems },
   } = state;
-
+  // Can update the count in the cartpage till the items present in the stock 
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
@@ -28,14 +28,15 @@ export default function Cartpage() {
       payload: { ...item, quantity },
     });
   };
+  // can delete the item from the cart
   const removeItemHandler = (item) => {
     ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
-
+  // navigate to the signin page after checking out
   const checkoutHandler = () => {
     navigate('/signin?redirect=/shipping');
   };
-
+  // Return the details that are present in the cart to checkout
   return (
     <div>
       <title>Shopping Cart</title>

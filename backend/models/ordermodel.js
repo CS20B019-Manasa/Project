@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+//schema for orders
 const orderSchema = new mongoose.Schema(
   {
     orderItems: [

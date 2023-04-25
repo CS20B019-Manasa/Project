@@ -4,6 +4,7 @@ import expressAsyncHandler from 'express-async-handler';
 import User from '../models/usermodel.js';
 import { generateToken } from '../utils.js';
 
+//routes for the user
 const userRouter = express.Router();
 
 userRouter.post(

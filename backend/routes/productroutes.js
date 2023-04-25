@@ -2,6 +2,7 @@ import express from 'express';
 import Product from '../models/productmodel.js';
 import expressAsyncHandler from 'express-async-handler';
 
+// routes for product schemas
 const productRouter = express.Router();
 
 productRouter.get('/', async (req, res) => {

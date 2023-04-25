@@ -8,6 +8,7 @@ import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
 
+//to display the form for signup page
 export default function Signuppage() {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -46,7 +47,7 @@ export default function Signuppage() {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
-
+  // return the details that user needs to enter
   return (
     <Container className="small-container">
       <title>Sign Up</title>

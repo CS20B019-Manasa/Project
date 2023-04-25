@@ -11,7 +11,7 @@ import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
 
-
+//to display the form for signin
 export default function Signinpage() {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -42,6 +42,8 @@ export default function Signinpage() {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
+
+  //return the details that are user needs to enter
   return (
         <Card className = "signin-card">
             <Container className="small-container">

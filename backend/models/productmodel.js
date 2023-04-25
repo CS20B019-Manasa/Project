@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+//schema for the products
 const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
