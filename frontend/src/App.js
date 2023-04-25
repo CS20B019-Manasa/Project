@@ -16,6 +16,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Addresspage from './Pages/Addresspage';
+import Signuppage from './Pages/Signuppage';
+import Paymentpage from './Pages/Paymentpage';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -25,6 +27,7 @@ function App() {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
+    localStorage.removeItem('paymentMethod');
   };
   return (
     <BrowserRouter>
@@ -79,6 +82,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/shipping" element={<Addresspage />} />
               <Route path="/signin" element={<Signinpage />} />
+              <Route path="/signup" element={<Signuppage />} />
+              <Route path="/payment" element={<Paymentpage />} />
             </Routes>
           </Container>
         </main>
