@@ -18,6 +18,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Addresspage from './Pages/Addresspage';
 import Signuppage from './Pages/Signuppage';
 import Paymentpage from './Pages/Paymentpage';
+import Placeorder from './Pages/Placeorder';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -84,6 +85,7 @@ function App() {
               <Route path="/signin" element={<Signinpage />} />
               <Route path="/signup" element={<Signuppage />} />
               <Route path="/payment" element={<Paymentpage />} />
+              <Route path="/placeorder" element={<Placeorder />} />
             </Routes>
           </Container>
         </main>
