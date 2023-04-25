@@ -3,8 +3,7 @@
 ### Clone repo
 
 ```
-$ git clone git@github.com:basir/mern-amazona.git
-$ cd mern-amazona
+$ git clone https://github.com/CS20B019-Manasa/Project
 ```
 
 ### Run Backend
