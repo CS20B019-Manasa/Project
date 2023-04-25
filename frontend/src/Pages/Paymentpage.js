@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import CheckoutSteps from '../Components/Checkout';
+import Checkout from '../Components/Checkout';
 import { Store } from '../Store';
 
 export default function PaymentMethodScreen() {
@@ -25,11 +25,15 @@ export default function PaymentMethodScreen() {
     e.preventDefault();
     ctxDispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethodName });
     localStorage.setItem('paymentMethod', paymentMethodName);
-    navigate('/placeorder');
+    if (paymentMethodName === 'PayonDelivery') {
+      navigate('/success');
+    } else {
+      navigate('/placeholder');
+    }
   };
   return (
     <div>
-      <CheckoutSteps step1 step2 step3></CheckoutSteps>
+      <Checkout step1 step2 step3></Checkout>
       <div className="container small-container">
         <title>Payment Method</title>
         <h1 className="my-3">Payment Method</h1>

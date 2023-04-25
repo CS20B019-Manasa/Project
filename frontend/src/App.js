@@ -22,6 +22,7 @@ import Placeorder from './Pages/Placeorder';
 import Orderpage from './Pages/Orderpage';
 import SearchBox from './Components/SearchBox';
 import SearchScreen from './Pages/SearchScreen';
+import Success from './Pages/Success';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -94,6 +95,7 @@ function App() {
               <Route path="/signup" element={<Signuppage />} />
               <Route path="/payment" element={<Paymentpage />} />
               <Route path="/placeorder" element={<Placeorder />} />
+              <Route path="/success" element={<Success />} />
               <Route path="/order/:id" element={<Orderpage />} />
             </Routes>
           </Container>
