@@ -47,7 +47,7 @@ export default function PlaceOrder() {
       dispatch({ type: 'CREATE_REQUEST' });
 
       const { data } = await Axios.post(
-        '/api/orders',
+        '/api/placeorder',
         {
           orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,
@@ -170,7 +170,7 @@ export default function PlaceOrder() {
                       onClick={placeOrderHandler}
                       disabled={cart.cartItems.length === 0}
                     >
-                      Place Order
+                      Pay and Continue
                     </Button>
                   </div>
                   {loading && <Loading></Loading>}
