@@ -36,5 +36,4 @@ $ npm start
 - Pay on delivery is available
 - Can pay through bank accounts
 - Can select one among bank accounts
-- Order will be placed after payment
 
